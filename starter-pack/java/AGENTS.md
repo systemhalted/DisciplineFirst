@@ -9,12 +9,16 @@ This repo follows **Discipline First**: clarity first, guardrails always, smalle
 - Do not delete files unless asked. If deletion is needed, explain why and list the files first.
 - Do not introduce new frameworks/libraries unless explicitly requested. Prefer existing patterns.
 
-## The Agent Brief (required)
+## Agent Brief (human-owned, required)
 
-Before writing or changing production code, create an **Agent Brief** using this template.
-If any field is unknown, ask before guessing.
+The **Agent Brief is written by humans** and is maintained here as the canonical template.
 
-### Agent Brief Template
+If no Agent Brief is provided in the PR description or issue, **do not proceed with production code changes**. Instead:
+1. Ask the human to paste a filled Agent Brief.
+2. Optionally, point out missing sections or ambiguity.
+3. Wait for the brief before implementing.
+
+### Agent Brief Template (human fills)
 
 **Goal:**  
 **Non-goals:**  
@@ -33,12 +37,13 @@ If any field is unknown, ask before guessing.
 - Stop and ask when uncertain.
 
 ## Workflow (always)
-1. Create or confirm the **Agent Brief** (above). If missing, write it first.
-2. Propose a plan in small steps (max 5) mapped to acceptance criteria.
-3. Make the smallest code change that satisfies *one* slice of the brief.
-4. Add/modify tests. If tests are missing, write them. Tests are the spec.
-5. Run tests and include the exact command(s) and summary of results.
-6. Summarize: what changed, why, how to verify, and rollback plan.
+1. Confirm there is a **human-provided Agent Brief**. If missing, stop and request it.
+2. Restate the brief in 3–5 bullets (goal + acceptance criteria + constraints).
+3. Propose a plan in small steps (max 5) mapped to acceptance criteria.
+4. Make the smallest code change that satisfies *one* slice of the brief.
+5. Add/modify tests. If tests are missing, write them. Tests are the spec.
+6. Run tests and include the exact command(s) and summary of results.
+7. Summarize: what changed, why, how to verify, and rollback plan.
 
 ## Guardrails
 - Tests are the spec. If behavior matters, it must be covered by tests.
