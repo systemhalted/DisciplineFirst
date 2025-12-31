@@ -1,24 +1,50 @@
-# AGENTS.md
-
-This repo follows **Discipline First**: clarity first, guardrails always, smallest diff that works.
-
-## Non-negotiables
-- Do not change public APIs unless explicitly permitted.
-- No big diffs. Prefer the smallest change that satisfies acceptance criteria.
-- Never remove or weaken auth, validation, security checks, or audit logging without explicit permission.
-- Do not delete files unless asked. If deletion is needed, explain why and list the files first.
-- Do not introduce new frameworks/libraries unless explicitly requested. Prefer existing patterns.
-
 ## Agent Brief (human-owned, required)
 
 The **Agent Brief is written by humans** and is maintained here as the canonical template.
 
 If no Agent Brief is provided in the PR description or issue, **do not proceed with production code changes**. Instead:
-1. Ask the human to paste a filled Agent Brief.
-2. Optionally, point out missing sections or ambiguity.
+1. Ask the human to paste a filled brief (Level 0/1/2 below).
+2. Point out missing sections or ambiguity.
 3. Wait for the brief before implementing.
 
-### Agent Brief Template (human fills)
+### Brief Levels (so this works for incremental work)
+
+Use the smallest level that still makes the change safe and reviewable.  
+If scope expands or uncertainty stays high, **escalate to the next level** before coding more.
+
+**Level 0: Micro-change (≤ 30 minutes)**  
+Examples: rename, small refactor, fix null check, tweak a log line, adjust a test.  
+Human must provide:
+- **Goal**
+- **Acceptance criteria** (or “how we’ll know it worked”)
+
+**Level 1: Incremental change (1–2 days)**  
+Examples: add a small validation rule, add one metric, add a feature-flagged branch, update one endpoint behavior.  
+Human must provide:
+- **Goal**
+- **Constraints**
+- **Acceptance criteria**
+- **Test plan** (at least: what must fail before it passes)
+
+Optional (recommended when relevant): Interfaces, Observability, Risks, Recovery.
+
+**Level 2: New feature / risky change**  
+Examples: new endpoint/workflow, auth/payments/data deletion, migrations, cross-service behavior.  
+Human must provide the **full Agent Brief** template.
+
+### Delta Brief (preferred for incremental changes)
+
+For existing systems, a diff-shaped brief is often better than a PRD.
+
+**Existing behavior:** (1–3 bullets)  
+**Desired behavior:** (1–3 bullets)  
+**Scope:** (files/components/endpoints likely touched)  
+**Out of scope:** (what must not change)  
+**Acceptance tests:** (scenarios or tests to add/modify)  
+**Risk:** (one line)  
+**Recovery:** (one line)
+
+### Full Agent Brief Template (Level 2)
 
 **Goal:**  
 **Non-goals:**  
@@ -37,41 +63,10 @@ If no Agent Brief is provided in the PR description or issue, **do not proceed w
 - Stop and ask when uncertain.
 
 ## Workflow (always)
-1. Confirm there is a **human-provided Agent Brief**. If missing, stop and request it.
+1. Confirm there is a **human-provided brief** (Level 0/1/2). If missing, stop and request it.
 2. Restate the brief in 3–5 bullets (goal + acceptance criteria + constraints).
 3. Propose a plan in small steps (max 5) mapped to acceptance criteria.
-4. Make the smallest code change that satisfies *one* slice of the brief.
+4. Make the smallest code change that satisfies *one* slice of the brief (one PR = one slice).
 5. Add/modify tests. If tests are missing, write them. Tests are the spec.
 6. Run tests and include the exact command(s) and summary of results.
-7. Summarize: what changed, why, how to verify, and rollback plan.
-
-## Guardrails
-- Tests are the spec. If behavior matters, it must be covered by tests.
-- Prefer refactors only after tests are green.
-- Keep changes observable: logs/metrics/traces where relevant.
-- Avoid broad package moves or “cleanup” sweeps.
-- If a dependency change seems necessary: propose it first with alternatives.
-
-## Commands
-Use the repo’s build tool. If unsure, ask before guessing.
-
-### Gradle
-- Build: `./gradlew clean build`
-- Unit tests: `./gradlew test`
-- Integration tests (if present): `./gradlew integrationTest`
-- Spotless/format (if present): `./gradlew spotlessApply`
-- Check: `./gradlew check`
-
-### Maven
-- Build: `./mvnw -q -DskipTests=false clean verify`
-- Unit tests: `./mvnw -q test`
-- Integration tests (Failsafe): `./mvnw -q verify -DskipITs=false`
-
-If commands differ in this repo, follow the README or CI config.
-
-## Java conventions
-- Prefer immutable data where reasonable.
-- Prefer constructor injection (if using Spring).
-- Avoid reflection-heavy “magic” unless the codebase already uses it.
-- Keep exception handling explicit; don’t swallow exceptions.
-- Keep logging structured and at appropriate levels.
+7. Summarize: what changed, why, how to verify, and recovery/rollback plan.
