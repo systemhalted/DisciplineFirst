@@ -11,7 +11,7 @@ This repo follows **Discipline First**: clarity first, guardrails always, smalle
 
 ## The Agent Brief (required)
 
-Before writing or changing production code, create an **Agent Brief** in the PR description (or in an issue/comment) using this template.
+Before writing or changing production code, create an **Agent Brief** using this template.
 If any field is unknown, ask before guessing.
 
 ### Agent Brief Template
